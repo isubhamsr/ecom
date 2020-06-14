@@ -1,5 +1,7 @@
 from django.shortcuts import render
 from django.http import JsonResponse
+from shop.models import Product
+from django.views.decorators.csrf import csrf_exempt
 
 # Create your views here.
 
@@ -12,7 +14,13 @@ def about(request):
 def contact(request):
     return JsonResponse({'message' : 'this is contact page'})
 
+@csrf_exempt
 def productview(request):
+    if request.method == 'POST':
+        data = Product.objects.all()
+        print(data.values())
+        payload = list(data.values())
+        return JsonResponse({'err' : 'false', 'message' : 'Fetched', 'data': payload})
     return render(request, 'shop/viewProduct.html')
 
 def tracker(request):
