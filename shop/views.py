@@ -18,7 +18,7 @@ def contact(request):
 def productview(request):
     if request.method == 'POST':
         data = Product.objects.all()
-        print(data.values())
+        # print(data.values())
         payload = list(data.values())
         return JsonResponse({'err' : 'false', 'message' : 'Fetched', 'data': payload})
     return render(request, 'shop/viewProduct.html')
