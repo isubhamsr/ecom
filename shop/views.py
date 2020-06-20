@@ -19,6 +19,9 @@ def contact(request):
 def productview(request, id):
     return render(request, 'shop/viewProduct.html')
 
+def cart(request):
+    return render(request, 'shop/cart.html')
+
 
 @csrf_exempt
 def product_view(request):
@@ -26,7 +29,7 @@ def product_view(request):
         params = json.loads(request.body)
         print(params['id'])
         data = Product.objects.filter(product_id=params['id'])
-        print(data.values())
+        # print(data.values())
         payload = list(data.values())
         return JsonResponse({'err' : 'false', 'message' : 'Fetched', 'data': payload})
     

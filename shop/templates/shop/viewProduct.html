@@ -1,9 +1,10 @@
 {% extends "shop/base.html" %}
 {% load static %}
+{% block title %}Chart Shirt - Product View{% endblock title %}
 {% block body %}
 <!-- h-40 rounded w-full object-cover object-center mb-6 -->
-    <section class="text-gray-700 body-font overflow-hidden" id="root">
-        <!-- <div class="container px-5 py-24 mx-auto">
+<section class="text-gray-700 body-font overflow-hidden" id="root">
+  <!-- <div class="container px-5 py-24 mx-auto">
           <div class="lg:w-4/5 mx-auto flex flex-wrap">
             <img alt="ecommerce" class="lg:w-1/2 w-full lg:h-auto h-64 object-cover object-center rounded" src="{% static '../media/shop/images/man-2.png' %}">
             <div class="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0">
@@ -83,23 +84,27 @@
             </div>
           </div>
         </div> -->
-      </section>
+</section>
 
 
-      <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 
 <script>
   $(document).ready(function () {
     console.log("ready!");
     console.log("1st");
-    
+
     const queryString = window.location.href;
     let ok = queryString.split("/")
     console.log(ok[4]);
+
+    
+
+    
     // console.log(params.getAll());
 
-    const data = {id : ok[4]}
-    
+    const data = { id: ok[4] }
+
     $.ajax({
       type: "POST",
       url: "/product-view/",
@@ -109,15 +114,15 @@
         response = JSON.parse(data)
         console.log(response.data);
         // alert(response.message).slice(0, 95)
-        
-        for(let i = 0; i<response.data.length; i++){
+
+        for (let i = 0; i < response.data.length; i++) {
           document.getElementById("root").innerHTML += `
           
           <div class="container px-5 py-24 mx-auto">
           <div class="lg:w-4/5 mx-auto flex flex-wrap">
             <img alt="ecommerce" class="lg:w-1/2 w-full lg:h-auto h-64 object-cover object-center rounded" src="../media/${response.data[i].product_image}">
             <div class="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0">
-              <h2 class="text-sm title-font text-gray-500 tracking-widest">${response.data[i].category}</h2>
+              <h2 class="text-sm title-font text-gray-500 tracking-widest" id="category">${response.data[i].category}</h2>
               <h1 class="text-gray-900 text-3xl title-font font-medium mb-1">${response.data[i].product_name}</h1>
               <div class="flex mb-4">
                 <span class="flex items-center">
@@ -167,11 +172,11 @@
                 <div class="flex ml-6 items-center">
                   <span class="mr-3">Size</span>
                   <div class="relative">
-                    <select class="rounded border appearance-none border-gray-400 py-2 focus:outline-none focus:border-indigo-500 text-base pl-3 pr-10">
-                      <option>SM</option>
-                      <option>M</option>
-                      <option>L</option>
-                      <option>XL</option>
+                    <select class="rounded border appearance-none border-gray-400 py-2 focus:outline-none focus:border-indigo-500 text-base pl-3 pr-10" id="select1">
+                      <option value="SM">SM</option>
+                      <option value="M">M</option>
+                      <option value="L">L</option>
+                      <option value="XL">XL</option>
                     </select>
                     <span class="absolute right-0 top-0 h-full w-10 text-center text-gray-600 pointer-events-none flex items-center justify-center">
                       <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4" viewBox="0 0 24 24">
@@ -183,7 +188,9 @@
               </div>
               <div class="flex">
                 <span class="title-font font-medium text-2xl text-gray-900">₹${response.data[i].price}</span>
-                <button class="flex ml-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded">Add To Cart</button>
+                <span id=${response.data[i].product_id} class="divpr py-2 px-6">
+                <button class="flex ml-auto text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded" onclick="addToCart('${response.data[i].product_id}','${response.data[i].category}','${response.data[i].product_name}','${response.data[i].price}')">Add To Cart</button>
+                </span>
                 <button class="rounded-full w-10 h-10 bg-gray-200 p-0 border-0 inline-flex items-center justify-center text-gray-500 ml-4">
                   <svg fill="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-5 h-5" viewBox="0 0 24 24">
                     <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"></path>
@@ -196,8 +203,25 @@
           
           `
         }
+        if (localStorage.getItem('cart') != null) {
+      var cart = JSON.parse(localStorage.getItem('cart'));
+      // updateCart(cart)
+    }
+        
+        // console.log(document.cookie.split('; '));
 
-        // console.log(data.token);
+        // const cookieValue = document.cookie.split('; ').find(row => row.startsWith('orders')).split('=')[1];
+        //       const cookieValue = document.cookie
+        // .split('; ')
+        // .find(row => row.startsWith('test2'))
+        // // .split('=')[1];
+        // JSON.parse(cookieValue)
+        //       console.log(JSON.parse(cookieValue));
+
+        // ${response.data[i].category},${response.data[i].product_name},${response.data[i].price}
+
+        // document.getElementById("category").value
+        // console.log(document.getElementById("category").value);
         // console.log("data 1 token");
 
         // const tokenData = JSON.parse(data)
@@ -214,5 +238,88 @@
     });
   });
 
+</script>
+<script>
+  function addToCart(id, category, product_name, price) {
+    // category,product_name,price
+    selectElement = document.querySelector('#select1');
+    size = selectElement.value;
+    price = parseInt(price)
+    // console.log("click ad to cart");
+    // console.log(typeof (category));
+    // console.log(product_name);
+    // console.log(price);
+    // console.log(output);
+    let orders = {
+      category: category,
+      product_name: product_name,
+      price: price,
+      size: size,
+    }
+
+    // let ordersArr = []
+    // ordersArr.push(orders)
+
+    // console.log('ordersArr');
+    // console.log(ordersArr);
+    // document.cookie = `orders=${JSON.stringify(ordersArr)}`
+
+    if (localStorage.getItem('cart') == null) {
+      var cart = {};
+    } else {
+      cart = JSON.parse(localStorage.getItem('cart'));
+      // console.log("cart");
+      // console.log(cart);
+      
+    }
+
+    // if (cart[id] != undefined) {
+    //   cart[id] = cart[id] + 1;
+    // } else {
+    //   cart[id] = 1;
+    // }
+
+    if(cart[id] != undefined){
+      let count = cart[id].quantity + 1
+      console.log("count");
+      
+      console.log(count);
+      let data = {product_id: id, category: category, product_name: product_name, price:price, quantity: cart[id].quantity + 1, size: size, totalPrice : cart[id].price * count}
+      cart[id] = data
+      // count = count + 1
+      
+      
+    }else{
+      // let count = 1
+      let data = {product_id: id, category: category, product_name: product_name, price:price, quantity: 1, size: size, totalPrice : price}
+      cart[id] = data
+      // count = count + 1
+    }
+
+
+    // console.log(cart);
+    localStorage.setItem('cart', JSON.stringify(cart));
+    alert("product added")
+    location.reload()
+
+    // let cart = JSON.parse(localStorage.getItem('cart'));
+    // updateCart(cart)    
+
+  }
+
+  function updateCart(cart) {
+    Object.keys(cart).forEach(function eachKey(key) {
+      console.log('key');
+      console.log(key);
+      
+      document.getElementById(key).innerHTML = "<h3>Hello</h3>"
+    })
+    // for (var item in cart) {
+    //     document.getElementById('div' + item).innerHTML = "<button id='minus" + item + "' class='btn btn-primary minus'>-</button> <span id='val" + item + "''>" + cart[item] + "</span> <button id='plus" + item + "' class='btn btn-primary plus'> + </button>";
+    // }
+    // localStorage.setItem('cart', JSON.stringify(cart));
+    // document.getElementById('cart').innerHTML = Object.keys(cart).length;
+    // console.log(cart);
+}
 </script>
 {% endblock body %}

@@ -6,12 +6,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
-  <title>Cart Shirt</title>
+  <title>{% block title %} {% endblock title %}</title>
 </head>
 
 <body>
   <!-- bg-white fixed  w-full -->
- 
+
   <header class="text-gray-700 body-font  bg-white fixed  w-full">
     <div class="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center">
       <a class="flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0" href="/">
@@ -26,21 +26,24 @@
         <a class="mr-5 hover:text-gray-900">Woman</a>
       </nav>
 
-      <div class="flex md:flex-no-wrap flex-wrap justify-center md:justify-start">
+      <div class="flex md:flex-no-wrap flex-wrap justify-center md:justify-start" id="cart">
         <input
           class="sm:w-64 w-40 bg-gray-100 rounded sm:mr-4 mr-2 border border-gray-400 focus:outline-none focus:border-indigo-500 text-base py-2 px-4"
           placeholder="Search Items" type="text">
         <button
-          class="inline-flex text-white bg-gray-600 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-400 rounded">Search</button>
+          class="inline-flex text-white bg-gray-600 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-400 rounded sm:mr-4 mr-2">Search</button>
+        <!-- <a href="/cart" target="_blank"
+          class="inline-flex text-white bg-gray-600 border-0 py-2 px-2 focus:outline-none hover:bg-indigo-400 rounded">Cart
+          20</a> -->
       </div>
     </div>
   </header>
-  
+
   <br>
   <br>
   <br>
   <br>
-  
+
 
   {% block body %}
 
@@ -216,5 +219,32 @@
 <!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script> -->
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script>
+  $(document).ready(function () {
+    console.log("ready!");
+    let cart = JSON.parse(localStorage.getItem('cart'));
+    if (cart != undefined) {
+      cartSize = Object.keys(cart).length
+      let url = '/cart'
+      let text = 'Cart'
+      // $("#cart").append('<a href="' + url + '">' + text + '</a>');
+      $("#cart").append(`<a href="/cart" target="_blank"
+          class="inline-flex text-white bg-red-500 border-0 py-2 px-2 focus:outline-none hover:bg-red-600 rounded">Cart
+          ${cartSize}</a>`);
+      // location.reload()
+    }
+    // else{
+    //   $("#cart").append(`<a href="/cart" target="_blank"
+    //       class="inline-flex text-white bg-gray-600 border-0 py-2 px-2 focus:outline-none hover:bg-indigo-400 rounded">Cart
+    //       0</a>`);
+    // }
+
+
+
+
+  });
+</script>
 
 </html>
