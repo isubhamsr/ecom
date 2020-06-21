@@ -7,6 +7,7 @@ urlpatterns = [
     path('about/', views.about, name='about'),
     path('contact/', views.contact, name='contact'),
     path('cart/', views.cart, name='cart'),
+    path('placeorder/', views.placeOrder, name='placeOrder'),
     path('tracker/', views.tracker, name='tracker'),
     path('search/', views.search, name='search'),
     path('productview/<int:id>', views.productview, name='productview'),
@@ -14,4 +15,5 @@ urlpatterns = [
     # re_path(r'^product-view/(?P<username>\w{0,50})/$', views.product_view, name='product_view'),
     path('allproduct/', views.allproduct, name='allproduct'),
     path('cheackout/', views.cheackout, name='cheackout'),
+    path('sentemail/', views.sentemail, name='sentemail'),
 ]

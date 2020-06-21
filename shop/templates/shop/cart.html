@@ -21,7 +21,6 @@
 
         <!-- <button class="flex mx-auto mt-20 text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">Button</button> -->
     </div>
-    
 </section>
 
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
@@ -60,8 +59,7 @@
                <button class="inline-flex mt-5 text-white bg-red-500 border-0 py-2 px-2 focus:outline-none hover:bg-red-600 rounded" onclick="deleteItem('${cart[key].product_id}')">Delete</button>
             </div>
            </div>
-           
-                       `
+                 `
                        
                 });
         
@@ -71,7 +69,7 @@ console.log(
   totalPrice
 )
 $("#showItems").append(`<button class="flex mx-auto mt-20 text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">Total Price: ${totalPrice}</button>
-<button class="flex mx-auto mt-10 text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">Place Order</button>
+<button class="flex mx-auto mt-5 text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg" onclick="placeOrder()">Cheackout</button>
 `);
         // for(let i = 0; i<arr.length; i++){
         //   console.log(arr[i]);
@@ -124,7 +122,7 @@ $("#showItems").append(`<button class="flex mx-auto mt-20 text-white bg-indigo-5
 
 <script>
  function minus(id) {
-   console.log("minus click "+id);
+  //  console.log("minus click "+id);
 
    let cart = JSON.parse(localStorage.getItem('cart'));
   //  console.log(cart[id].quantity);
@@ -136,12 +134,11 @@ $("#showItems").append(`<button class="flex mx-auto mt-20 text-white bg-indigo-5
    localStorage.setItem('cart', JSON.stringify(cart));
    location.reload()
  }
-    
-
 </script>
+
 <script>
  function plus(id) {
-   console.log("plus click "+id);
+  //  console.log("plus click "+id);
    let cart = JSON.parse(localStorage.getItem('cart'));
   //  console.log(cart[id].quantity);
 
@@ -152,20 +149,23 @@ $("#showItems").append(`<button class="flex mx-auto mt-20 text-white bg-indigo-5
    localStorage.setItem('cart', JSON.stringify(cart));
    location.reload()
  }
-
 </script>
 
 <script>
  function deleteItem(id) {
-   console.log("plus click "+id);
+  //  console.log("plus click "+id);
    let cart = JSON.parse(localStorage.getItem('cart'));
-  //  console.log(cart[id].quantity);
-
    delete cart[id]
    localStorage.setItem('cart', JSON.stringify(cart));
    location.reload()
  }
+</script>
 
+<script>
+  function placeOrder(){
+    // window.location.replace("/placeOrder")
+    window.open('/placeorder', '_blank');
+  }
 </script>
 
 {% endblock body %}

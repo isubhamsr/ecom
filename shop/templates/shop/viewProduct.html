@@ -119,7 +119,7 @@
           document.getElementById("root").innerHTML += `
           
           <div class="container px-5 py-24 mx-auto">
-          <div class="lg:w-4/5 mx-auto flex flex-wrap">
+          <div class="lg:w-4/5 mx-auto flex flex-wrap img1">
             <img alt="ecommerce" class="lg:w-1/2 w-full lg:h-auto h-64 object-cover object-center rounded" src="../media/${response.data[i].product_image}">
             <div class="lg:w-1/2 w-full lg:pl-10 lg:py-6 mt-6 lg:mt-0">
               <h2 class="text-sm title-font text-gray-500 tracking-widest" id="category">${response.data[i].category}</h2>
@@ -245,6 +245,7 @@
     selectElement = document.querySelector('#select1');
     size = selectElement.value;
     price = parseInt(price)
+    image = $('.img1 img').attr('src');
     // console.log("click ad to cart");
     // console.log(typeof (category));
     // console.log(product_name);
@@ -255,6 +256,7 @@
       product_name: product_name,
       price: price,
       size: size,
+      image : image
     }
 
     // let ordersArr = []
@@ -284,14 +286,14 @@
       console.log("count");
       
       console.log(count);
-      let data = {product_id: id, category: category, product_name: product_name, price:price, quantity: cart[id].quantity + 1, size: size, totalPrice : cart[id].price * count}
+      let data = {product_id: id, category: category, product_name: product_name, price:price, quantity: cart[id].quantity + 1, size: size, totalPrice : cart[id].price * count, image : image}
       cart[id] = data
       // count = count + 1
       
       
     }else{
       // let count = 1
-      let data = {product_id: id, category: category, product_name: product_name, price:price, quantity: 1, size: size, totalPrice : price}
+      let data = {product_id: id, category: category, product_name: product_name, price:price, quantity: 1, size: size, totalPrice : price, image : image}
       cart[id] = data
       // count = count + 1
     }
