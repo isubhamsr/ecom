@@ -21,6 +21,7 @@
 
         <!-- <button class="flex mx-auto mt-20 text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">Button</button> -->
     </div>
+    
 </section>
 
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
@@ -56,7 +57,7 @@
                     <button onclick="plus('${cart[key].product_id}')" id="plus" class=" bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-r">+</button>
                </p>
                <p class="leading-relaxed text-base">Size : ${cart[key].size}</p>
-               
+               <button class="inline-flex mt-5 text-white bg-red-500 border-0 py-2 px-2 focus:outline-none hover:bg-red-600 rounded" onclick="deleteItem('${cart[key].product_id}')">Delete</button>
             </div>
            </div>
            
@@ -151,7 +152,19 @@ $("#showItems").append(`<button class="flex mx-auto mt-20 text-white bg-indigo-5
    localStorage.setItem('cart', JSON.stringify(cart));
    location.reload()
  }
-    
+
+</script>
+
+<script>
+ function deleteItem(id) {
+   console.log("plus click "+id);
+   let cart = JSON.parse(localStorage.getItem('cart'));
+  //  console.log(cart[id].quantity);
+
+   delete cart[id]
+   localStorage.setItem('cart', JSON.stringify(cart));
+   location.reload()
+ }
 
 </script>
 
