@@ -225,14 +225,22 @@
   $(document).ready(function () {
     console.log("ready!");
     let cart = JSON.parse(localStorage.getItem('cart'));
+    let arr = []
     if (cart != undefined) {
-      cartSize = Object.keys(cart).length
-      let url = '/cart'
-      let text = 'Cart'
-      // $("#cart").append('<a href="' + url + '">' + text + '</a>');
+      Object.keys(cart).forEach(function eachKey(key) {
+        var quantity = 0
+        quantity = quantity + cart[key].quantity
+        arr.push(quantity)
+      })
+      quantity = arr.reduce((a, b) => a + b, 0)
+
+      // cartSize = Object.keys(cart).length
+      // let url = '/cart'
+      // let text = 'Cart'
+      // // $("#cart").append('<a href="' + url + '">' + text + '</a>');
       $("#cart").append(`<a href="/cart" target="_blank"
           class="inline-flex text-white bg-red-500 border-0 py-2 px-2 focus:outline-none hover:bg-red-600 rounded">Cart
-          ${cartSize}</a>`);
+          ${quantity}</a>`);
       // location.reload()
     }
     // else{
