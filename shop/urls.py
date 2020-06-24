@@ -15,5 +15,8 @@ urlpatterns = [
     # re_path(r'^product-view/(?P<username>\w{0,50})/$', views.product_view, name='product_view'),
     path('allproduct/', views.allproduct, name='allproduct'),
     path('cheackout/', views.cheackout, name='cheackout'),
-    path('sentemail/', views.sentemail, name='sentemail'),
+    # path('sentemail/', views.sentemail, name='sentemail'),
+    path('man/', views.man, name='man'),
+    path('woman/', views.woman, name='woman'),
+    path('thankyou/', views.thankyou, name='thankyou'),
 ]

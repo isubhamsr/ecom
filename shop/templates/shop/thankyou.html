@@ -1,0 +1,19 @@
+{% extends "shop/base.html" %}
+{% load static %}
+{% block title %}Thank You{% endblock title %}
+{% block body %}
+
+<section class="text-gray-700 body-font">
+    <div class="container px-5 py-24 mx-auto">
+      <div class="lg:w-2/3 inline-flex flex-col sm:flex-col my-4 items-start mx-auto">
+        <h1 class="sm:pr-16 text-2xl font-medium title-font my-4 text-gray-900">Thank You For Shop With Us</h1>
+        <h3 class="sm:pr-16 text-2xl font-medium title-font my-4 text-gray-900">Cheack Your Mail for Order Id and Order Confimation</h3>
+        <a href="/tracker"  target="_blank" rel="noopener noreferrer" class="flex-shrink-0 text-white bg-indigo-500 border-0 py-2 px-8 mt-4 focus:outline-none hover:bg-indigo-600 rounded text-lg mt-10 sm:mt-0">
+          Track Your Order
+        </a>
+        <!-- <button class="flex-shrink-0 text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg mt-10 sm:mt-0">Button</button> -->
+      </div>
+    </div>
+  </section>
+
+{% endblock body %}

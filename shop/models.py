@@ -16,3 +16,28 @@ class Product(models.Model):
 
     def __str__(self):
         return f"{self.product_id} - {self.product_name}"
+
+class Order(models.Model):
+    order_id = models.AutoField(primary_key=True)
+    first_name = models.CharField(max_length=255)
+    last_name = models.CharField(max_length=255)
+    email = models.CharField(max_length=255)
+    phone = models.CharField(max_length=255)
+    address = models.TextField()
+    city = models.CharField(max_length=255)
+    state = models.CharField(max_length=255)
+    zip_code = models.CharField(max_length=255)
+    ordered_item = models.TextField()
+
+    def __str__(self):
+        return f"{self.order_id} - {self.first_name}"
+
+class OrderUpdate(models.Model):
+    update_id  = models.AutoField(primary_key=True)
+    order_id = models.IntegerField(default="")
+    status = models.CharField(max_length=255, default="")
+    update_desc = models.TextField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.order_id} - {self.status}"

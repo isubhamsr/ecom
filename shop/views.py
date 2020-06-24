@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import JsonResponse
-from shop.models import Product
+from shop.models import Product, Order, OrderUpdate
 import json
 from django.views.decorators.csrf import csrf_exempt
 from django.core.mail import send_mail,EmailMessage
@@ -20,6 +20,15 @@ def contact(request):
 
 def productview(request, id):
     return render(request, 'shop/viewProduct.html')
+
+def man(request):
+    return render(request, 'shop/man.html')
+
+def woman(request):
+    return render(request, 'shop/woman.html')
+
+def thankyou(request):
+    return render(request, 'shop/thankyou.html')
 
 @csrf_exempt
 def cart(request):
@@ -65,8 +74,7 @@ def allproduct(request):
 
 
 @csrf_exempt
-def sentemail(request):
-    
+def sentemail1(request):
     if request.method == 'POST':
         # res = send_mail(
         #     'Subject here',
@@ -85,12 +93,52 @@ def sentemail(request):
         return JsonResponse({'err' : 'false', 'message' : 'Fetched', 'data': 'payload'})
     # return render(request, 'shop/viewProduct.html')
 
-
+@csrf_exempt
 def tracker(request):
-    return JsonResponse({'message' : 'This is tracker page'})
+    if request.method == 'POST':
+        params = json.loads(request.body)
+        print(params['orderId'])
+        print(params['email'])
+        try:
+            order = Order.objects.filter(order_id=params['orderId'], email=params['email'])
+            print(order)
+            if len(order) > 0:
+                update = OrderUpdate.objects.filter(order_id=params['orderId'])
+                # print(update)
+                payload = list(update.values())
+                return JsonResponse({'err':'false', 'message' : 'Order Tracked', 'payload' : payload})
+            else:
+                return JsonResponse({'err':'true', 'message' : 'Please Enter Right Order Id or Email'})
+        except Exception as e:
+            # print(e)
+            return JsonResponse({'err':'true', 'message' : 'Something West Worng'})
+    return render(request, 'shop/tracker.html')
 
 def search(request):
     return JsonResponse({'message' : 'This is search page'})
 
+@csrf_exempt
 def cheackout(request):
-    return JsonResponse({'message' : 'This is cheackout page'})
+    if request.method == 'POST':
+        params = json.loads(request.body)
+        print(params['ordered_item'])
+        address = f"{params['addressLine1']} - {params['addressLine2']}"
+        order = Order(first_name=params['first_name'], last_name=params['last_name'], email=params['email'], phone=params['phone'], address=address, 
+                        city=params['city'], state=params['state'], zip_code=params['zip_code'], ordered_item=params['ordered_item'])
+        order.save()
+        print(order.order_id)
+        order_id = order.order_id
+        update = OrderUpdate(order_id=order_id, update_desc="Order Placed", status="Order Placed")
+        update.save()
+        sentMail(order_id,params['email'])
+        return JsonResponse({'err': 'false', 'message' : 'Order Placeed', 'order_id': order_id})
+
+def sentMail(order_id, email):
+    # emailArr = []
+    # emailArr.append(email)
+    email = EmailMessage(subject = 'Order Confirmed',
+                                body = f'Your Order succesfully placed. Your order Id {order_id}',
+                                from_email = 'Cart Shart',
+                                to = [email])
+    email.send()
+    return True
