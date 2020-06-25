@@ -18,6 +18,11 @@ class Product(models.Model):
         return f"{self.product_id} - {self.product_name}"
 
 class Order(models.Model):
+    STATUS_CHOICES = (
+    ('active','ACTIVE'),
+    ('shipped', 'SHIPPED'),
+    ('deliver','DELIVER'),
+    )
     order_id = models.AutoField(primary_key=True)
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
@@ -27,6 +32,8 @@ class Order(models.Model):
     city = models.CharField(max_length=255)
     state = models.CharField(max_length=255)
     zip_code = models.CharField(max_length=255)
+    total_price = models.CharField(max_length=255, default="")
+    status = models.CharField(max_length=255, choices=STATUS_CHOICES, default='active')
     ordered_item = models.TextField()
 
     def __str__(self):

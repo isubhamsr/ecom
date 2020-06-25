@@ -19,4 +19,5 @@ urlpatterns = [
     path('man/', views.man, name='man'),
     path('woman/', views.woman, name='woman'),
     path('thankyou/', views.thankyou, name='thankyou'),
+    path('gen_pdf/', views.gen_pdf, name='gen_pdf'),
 ]

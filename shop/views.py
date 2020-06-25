@@ -1,11 +1,21 @@
 from django.shortcuts import render
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from shop.models import Product, Order, OrderUpdate
 import json
 from django.views.decorators.csrf import csrf_exempt
 from django.core.mail import send_mail,EmailMessage
 from django.core import serializers
-
+from django.template.loader import get_template, render_to_string
+from django.template import Context
+import pdfkit
+from xhtml2pdf import pisa
+from io import BytesIO
+import os
+from tempfile import NamedTemporaryFile
+from InvoiceGenerator.api import Invoice, Item, Client, Provider, Creator
+from InvoiceGenerator.pdf import SimpleInvoice
+from django.utils.html import strip_tags
+from django.core import mail
 # Create your views here.
 
 def shopHome(request):
@@ -117,14 +127,58 @@ def tracker(request):
 def search(request):
     return JsonResponse({'message' : 'This is search page'})
 
+def gen_pdf(request):
+    # pdf = render_to_pdf('shop/pdf_template.html', {"data" :"Subham"})
+    # response = HttpResponse(pdf, content_type='application/pdf')
+    # filename = "output.pdf"
+    # content = "attachment; filename=output.pdf" 
+    # response['Content-Disposition'] = content
+    # return response
+
+
+# choose english as language
+    os.environ["INVOICE_LANG"] = "en"
+
+    client = Client('Client company')
+    provider = Provider('My company', bank_account='2600420569', bank_code='2010')
+    creator = Creator('John Doe')
+
+    invoice = Invoice(client, provider, creator)
+    invoice.currency_locale = 'en_US.UTF-8'
+    invoice.add_item(Item(32, 600, description="Item 1"))
+    invoice.add_item(Item(60, 50, description="Item 2", tax=21))
+    invoice.add_item(Item(50, 60, description="Item 3", tax=0))
+    invoice.add_item(Item(5, 600, description="Item 4", tax=15))
+    pdf = SimpleInvoice(invoice)
+    pdf.gen("invoice.pdf", generate_qr_code=True)
+    return JsonResponse({'message' : 'This is search page'})
+
+def render_to_pdf(template_src, context_dict={}):
+	template = get_template(template_src)
+	html  = template.render(context_dict)
+	result = BytesIO()
+	pdf = pisa.pisaDocument(BytesIO(html.encode("ISO-8859-1")), result)
+	if not pdf.err:
+		return HttpResponse(result.getvalue(), content_type='application/pdf')
+	return None
+
 @csrf_exempt
 def cheackout(request):
     if request.method == 'POST':
         params = json.loads(request.body)
-        print(params['ordered_item'])
+        print(type( params['ordered_item']))
+        dict2 = eval(params['ordered_item'])
         address = f"{params['addressLine1']} - {params['addressLine2']}"
+        totalPrice = 0
+        
+        for key in dict2:
+            for another_key in dict2[key]:
+            #print(another_key)
+                if(another_key=="totalPrice"):
+                    totalPrice=totalPrice+dict2[key][another_key]
+        print(totalPrice)
         order = Order(first_name=params['first_name'], last_name=params['last_name'], email=params['email'], phone=params['phone'], address=address, 
-                        city=params['city'], state=params['state'], zip_code=params['zip_code'], ordered_item=params['ordered_item'])
+                        city=params['city'], state=params['state'], zip_code=params['zip_code'],total_price=totalPrice ,ordered_item=params['ordered_item'])
         order.save()
         print(order.order_id)
         order_id = order.order_id
@@ -136,9 +190,16 @@ def cheackout(request):
 def sentMail(order_id, email):
     # emailArr = []
     # emailArr.append(email)
-    email = EmailMessage(subject = 'Order Confirmed',
-                                body = f'Your Order succesfully placed. Your order Id {order_id}',
-                                from_email = 'Cart Shart',
-                                to = [email])
-    email.send()
+    subject = 'Order Confirmed'
+    html_message = render_to_string('shop/mail_template.html', {'orderid': order_id, 'email' : email})
+    plain_message = strip_tags(html_message)
+    from_email = 'Cart Shart'
+    to = email
+    mail.send_mail(subject, plain_message, from_email, [to], html_message=html_message)
+    # email = EmailMessage(subject = 'Order Confirmed',
+    #                             body = f'Your Order succesfully placed. Your order Id {order_id}',
+    #                             from_email = 'Cart Shart',
+    #                             to = [email])
+    # email = EmailMessage(subject,plain_message,from_email,[to], html_message=html_message)
+    # email.send()
     return True
