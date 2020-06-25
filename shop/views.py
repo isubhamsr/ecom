@@ -44,7 +44,7 @@ def man(request):
         params = json.loads(request.body)
         data = Product.objects.filter(category=params['category'])
         payload = list(data.values())
-        print(payload)
+        # print(payload)
         return JsonResponse({'err':'false', 'message': 'Fetched', 'data' : payload})
     return render(request, 'shop/man.html')
 
@@ -54,7 +54,7 @@ def woman(request):
         params = json.loads(request.body)
         data = Product.objects.filter(category=params['category'])
         payload = list(data.values())
-        print(payload)
+        # print(payload)
         return JsonResponse({'err':'false', 'message': 'Fetched', 'data' : payload})
     return render(request, 'shop/woman.html')
 

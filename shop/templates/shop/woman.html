@@ -49,6 +49,7 @@ margin-top: 10px;
         for(let i = 0; i< response.data.length; i++){
           document.getElementById("showItems").innerHTML += `
           <div class="flex items-center lg:w-3/5 mx-auto border-b pb-10 mb-10 border-gray-200 sm:flex-row flex-col" id="showimgs">
+            <a href="/productview/${response.data[i].product_id}" target="_blank" rel="noopener noreferrer" class="flex items-center mx-auto border-b border-gray-200 sm:flex-row flex-col">
           <img class="lg:w-3/5 mx-auto mb-10 inline-flex items-center " src="../media/${response.data[i].product_image}" alt="img" >
          <div class="flex-grow sm:text-left text-center mt-6 sm:mt-0">
            <h2 class="text-gray-900 text-lg title-font font-medium mb-2">${response.data[i].product_name}</h2>
@@ -56,6 +57,7 @@ margin-top: 10px;
            <p class="leading-relaxed text-base div-quantity">${response.data[i].product_desc.slice(0, 95)}..</p>
            
         </div>
+        </a>
         </div>
           `
         }
