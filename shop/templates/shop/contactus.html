@@ -1,0 +1,69 @@
+{% extends "shop/base.html" %}
+{% load static %}
+{% block title %}Contact Us{% endblock title %}
+{% block body %}
+
+<section class="text-gray-700 body-font relative">
+    <div class="container px-5 py-24 mx-auto">
+      <div class="flex flex-col text-center w-full mb-12">
+        <h1 class="sm:text-3xl text-2xl font-medium title-font mb-4 text-gray-900">Contact Us</h1>
+        <!-- <p class="lg:w-2/3 mx-auto leading-relaxed text-base">Whatever cardigan tote bag tumblr hexagon brooklyn asymmetrical gentrify.</p> -->
+      </div>
+      <div class="lg:w-1/2 md:w-2/3 mx-auto">
+        <div class="flex flex-wrap -m-2">
+          <div class="p-2 w-1/2">
+            <input class="w-full bg-gray-100 rounded border border-gray-400 focus:outline-none focus:border-indigo-500 text-base px-4 py-2" placeholder="Name" type="text" id="name">
+          </div>
+          <div class="p-2 w-1/2">
+            <input class="w-full bg-gray-100 rounded border border-gray-400 focus:outline-none focus:border-indigo-500 text-base px-4 py-2" placeholder="Email" type="email" id="email">
+          </div>
+          <div class="p-2 w-full">
+            <textarea class="w-full bg-gray-100 rounded border border-gray-400 focus:outline-none h-48 focus:border-indigo-500 text-base px-4 py-2 resize-none block" placeholder="Message" id="message"></textarea>
+          </div>
+          <div class="p-2 w-full">
+            <button class="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg" onclick="contactUs()">Submit</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+
+  <script>
+    function contactUs () {
+      console.log("ready!");
+      console.log("1st");
+  
+      const data = { 
+          name: document.getElementById('name').value, 
+          email: document.getElementById('email').value, 
+          message: document.getElementById('message').value, 
+      }
+
+    //   document.getElementById("showItems").innerHTML = `<div class="loader"></div>`
+      $.ajax({
+        type: "POST",
+        url: "/contact/",
+        data: JSON.stringify(data),
+        success: function (data) {
+          console.log("Succcess ==== >");
+          response = JSON.parse(data)
+          console.log(response.message);
+          alert(response.message);
+          window.location.replace("/contact")
+        //   $("#showItems").empty();
+  
+        },
+        dataType: "text",
+        error: function (err) {
+          console.log("---------ERROR----->")
+          console.log(err.responseText);
+        }
+      });
+    }
+  
+  </script>
+
+{% endblock body %}
+

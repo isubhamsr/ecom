@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import JsonResponse, HttpResponse
-from shop.models import Product, Order, OrderUpdate
+from shop.models import Product, Order, OrderUpdate, ContactUs
 import json
 from django.views.decorators.csrf import csrf_exempt
 from django.core.mail import send_mail,EmailMessage
@@ -22,10 +22,17 @@ def shopHome(request):
     return render(request, 'shop/shopHome.html')
 
 def about(request):
-    return JsonResponse({'message' : 'this is about page'})
+    return render(request, 'shop/about.html')
 
+@csrf_exempt
 def contact(request):
-    return JsonResponse({'message' : 'this is contact page'})
+    if request.method == "POST":
+        params = json.loads(request.body)
+        print(params)
+        contact = ContactUs(name=params['name'], email=params['email'], message=params['message'])
+        contact.save()
+        return JsonResponse({'err': 'false', 'message': 'Message Send'})
+    return render(request, 'shop/contactus.html')
 
 
 def productview(request, id):

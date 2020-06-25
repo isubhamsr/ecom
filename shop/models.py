@@ -49,3 +49,12 @@ class OrderUpdate(models.Model):
 
     def __str__(self):
         return f"{self.order_id} - {self.status}"
+
+class ContactUs(models.Model):
+    contact_id  = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=255)
+    email = models.CharField(max_length=255)
+    message = models.TextField()
+
+    def __str__(self):
+        return f"{self.contact_id} - {self.name}"
