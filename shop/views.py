@@ -167,10 +167,10 @@ def cheackout(request):
     if request.method == 'POST':
         params = json.loads(request.body)
         print(type( params['ordered_item']))
-        dict2 = eval(params['ordered_item'])
+        dict2 = params['ordered_item']
         address = f"{params['addressLine1']} - {params['addressLine2']}"
         totalPrice = 0
-        
+        print(type(dict2))
         for key in dict2:
             for another_key in dict2[key]:
             #print(another_key)
@@ -184,14 +184,21 @@ def cheackout(request):
         order_id = order.order_id
         update = OrderUpdate(order_id=order_id, update_desc="Order Placed", status="Order Placed")
         update.save()
-        sentMail(order_id,params['email'])
+        sentMail(order_id,params['email'], params['first_name'], params['last_name'], address, dict2, totalPrice)
         return JsonResponse({'err': 'false', 'message' : 'Order Placeed', 'order_id': order_id})
 
-def sentMail(order_id, email):
+def sentMail(order_id, email, first_name, last_name, address, orderItem, totalPrice):
     # emailArr = []
-    # emailArr.append(email)
+    # emailArr.append(email) 
+    # for key, val in dict2.items():
+    # if isinstance(val, dict):
+    #     print(val.get('product_name'))
+    #     print(val.get('quantity'))
+    #     print(val.get('price'))
+    #     print(val.get('totalPrice'))
+    print(orderItem)
     subject = 'Order Confirmed'
-    html_message = render_to_string('shop/mail_template.html', {'orderid': order_id, 'email' : email})
+    html_message = render_to_string('shop/mail_template.html', {'orderid': order_id, 'email' : email, 'first_name':first_name, 'last_name':last_name, 'address':address, 'orderItem': orderItem, 'totalPrice': totalPrice})
     plain_message = strip_tags(html_message)
     from_email = 'Cart Shart'
     to = email
