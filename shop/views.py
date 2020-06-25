@@ -178,16 +178,16 @@ def cheackout(request):
                     totalPrice=totalPrice+dict2[key][another_key]
         print(totalPrice)
         order = Order(first_name=params['first_name'], last_name=params['last_name'], email=params['email'], phone=params['phone'], address=address, 
-                        city=params['city'], state=params['state'], zip_code=params['zip_code'],total_price=totalPrice ,ordered_item=params['ordered_item'])
+                        city=params['city'], state=params['state'], zip_code=params['zip_code'],total_price=totalPrice,date=params['date'], ordered_item=params['ordered_item'])
         order.save()
         print(order.order_id)
         order_id = order.order_id
         update = OrderUpdate(order_id=order_id, update_desc="Order Placed", status="Order Placed")
         update.save()
-        sentMail(order_id,params['email'], params['first_name'], params['last_name'], address, dict2, totalPrice)
+        sentMail(order_id,params['email'], params['first_name'], params['last_name'], address, dict2, totalPrice, params['date'])
         return JsonResponse({'err': 'false', 'message' : 'Order Placeed', 'order_id': order_id})
 
-def sentMail(order_id, email, first_name, last_name, address, orderItem, totalPrice):
+def sentMail(order_id, email, first_name, last_name, address, orderItem, totalPrice, date):
     # emailArr = []
     # emailArr.append(email) 
     # for key, val in dict2.items():
@@ -198,7 +198,7 @@ def sentMail(order_id, email, first_name, last_name, address, orderItem, totalPr
     #     print(val.get('totalPrice'))
     print(orderItem)
     subject = 'Order Confirmed'
-    html_message = render_to_string('shop/mail_template.html', {'orderid': order_id, 'email' : email, 'first_name':first_name, 'last_name':last_name, 'address':address, 'orderItem': orderItem, 'totalPrice': totalPrice})
+    html_message = render_to_string('shop/mail_template.html', {'orderid': order_id, 'email' : email, 'first_name':first_name, 'last_name':last_name, 'address':address, 'orderItem': orderItem, 'totalPrice': totalPrice, 'date':date})
     plain_message = strip_tags(html_message)
     from_email = 'Cart Shart'
     to = email

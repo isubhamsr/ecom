@@ -128,6 +128,11 @@
         let state = document.getElementById('state').value
         let zip_code = document.getElementById('zip_code').value
         let ordered_item = JSON.parse(localStorage.getItem('cart'));
+        let date = new Date()
+        console.log(date.getFullYear());
+        console.log(date.getMonth()+1);
+        console.log(date.getDate());
+        let finalDate = `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()}`
 
         let data = {
             first_name: first_name,
@@ -139,8 +144,12 @@
             city: city,
             state: state,
             zip_code : zip_code,
-            ordered_item: ordered_item
+            ordered_item: ordered_item,
+            date : finalDate
         }
+
+        console.log(data);
+        
 
         document.getElementById("loader").innerHTML = `<div class="loader"></div>`
 

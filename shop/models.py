@@ -33,6 +33,7 @@ class Order(models.Model):
     state = models.CharField(max_length=255)
     zip_code = models.CharField(max_length=255)
     total_price = models.CharField(max_length=255, default="")
+    date = models.CharField(max_length=255, default="")
     status = models.CharField(max_length=255, choices=STATUS_CHOICES, default='active')
     ordered_item = models.TextField()
 
