@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.utils.timezone import now
 # Create your models here.
 
 class Product(models.Model):
@@ -33,9 +33,11 @@ class Order(models.Model):
     state = models.CharField(max_length=255)
     zip_code = models.CharField(max_length=255)
     total_price = models.CharField(max_length=255, default="")
+    date = models.CharField(max_length=255, default="")
     status = models.CharField(max_length=255, choices=STATUS_CHOICES, default='active')
     ordered_item = models.TextField()
-
+    created_at = models.DateTimeField(auto_now_add=True)
+    
     def __str__(self):
         return f"{self.order_id} - {self.first_name}"
 

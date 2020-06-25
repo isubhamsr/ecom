@@ -3,6 +3,23 @@
 {% block title %}Place Order{% endblock title %}
 {% block body %}
 
+<style>
+    .loader {
+  border: 16px solid #f3f3f3; /* Light grey */
+  border-top: 16px solid #3498db; /* Blue */
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 2s linear infinite;
+  margin-top: 10px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+</style>
+
 <div class="container px-5 py-24 mx-auto">
     <div class="flex  flex-wrap -mx-3 mb-6">
         <div class="w-full md:w-1/2 px-3 mb-6 md:mb-0">
@@ -89,9 +106,12 @@
                 class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                 id="zip_code" type="text" placeholder="700109" required>
         </div>
-        <button
+        <div id="loader" class="flex mx-auto">
+            <button
             class="flex mx-auto mt-20 text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg"
             onclick="placeOrder()">Place Order</button>
+        </div>
+        
     </div>
 </div>
 
@@ -121,6 +141,8 @@
             zip_code : zip_code,
             ordered_item: ordered_item
         }
+
+        document.getElementById("loader").innerHTML = `<div class="loader"></div>`
 
         $.ajax({
             type: "POST",
