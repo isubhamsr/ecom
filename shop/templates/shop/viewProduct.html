@@ -3,6 +3,25 @@
 {% block title %}Chart Shirt - Product View{% endblock title %}
 {% block body %}
 <!-- h-40 rounded w-full object-cover object-center mb-6 -->
+
+<style>
+  .loader {
+    
+border: 16px solid #f3f3f3; /* Light grey */
+border-top: 16px solid #3498db; /* Blue */
+border-radius: 50%;
+width: 50px;
+height: 50px;
+animation: spin 2s linear infinite;
+margin-top: 10px;
+}
+
+@keyframes spin {
+0% { transform: rotate(0deg); }
+100% { transform: rotate(360deg); }
+}
+</style>
+
 <section class="text-gray-700 body-font overflow-hidden" id="root">
   <!-- <div class="container px-5 py-24 mx-auto">
           <div class="lg:w-4/5 mx-auto flex flex-wrap">
@@ -93,7 +112,7 @@
   $(document).ready(function () {
     console.log("ready!");
     console.log("1st");
-
+    document.getElementById("root").innerHTML = `<div class="loader"></div>`
     const queryString = window.location.href;
     let ok = queryString.split("/")
     console.log(ok[4]);
@@ -114,7 +133,7 @@
         response = JSON.parse(data)
         console.log(response.data);
         // alert(response.message).slice(0, 95)
-
+        $("#root").empty();
         for (let i = 0; i < response.data.length; i++) {
           document.getElementById("root").innerHTML += `
           
