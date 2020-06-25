@@ -31,10 +31,24 @@ def contact(request):
 def productview(request, id):
     return render(request, 'shop/viewProduct.html')
 
+@csrf_exempt
 def man(request):
+    if request.method == "POST":
+        params = json.loads(request.body)
+        data = Product.objects.filter(category=params['category'])
+        payload = list(data.values())
+        print(payload)
+        return JsonResponse({'err':'false', 'message': 'Fetched', 'data' : payload})
     return render(request, 'shop/man.html')
 
+@csrf_exempt
 def woman(request):
+    if request.method == "POST":
+        params = json.loads(request.body)
+        data = Product.objects.filter(category=params['category'])
+        payload = list(data.values())
+        print(payload)
+        return JsonResponse({'err':'false', 'message': 'Fetched', 'data' : payload})
     return render(request, 'shop/woman.html')
 
 def thankyou(request):
@@ -52,7 +66,7 @@ def cart(request):
             payload.append(list(data.values()))
             # payload.append(serializers.serialize('json', data))
             # qs_json = serializers.serialize('json', data)
-        print(payload)
+        # print(payload)
         return JsonResponse({"err":"false", "message":"ok", 'data': payload})
     return render(request, 'shop/cart2.html')
 

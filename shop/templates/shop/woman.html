@@ -5,7 +5,52 @@
 
 <section class="text-gray-700 body-font">
   <div class="container px-5 py-24 mx-auto" id="showItems">
-      
+
+    
   </div>
 </section>
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+
+<script>
+  $(document).ready(function () {
+    console.log("ready!");
+    console.log("1st");
+
+    const data = { category: "woman" }
+
+    $.ajax({
+      type: "POST",
+      url: "/woman/",
+      data: JSON.stringify(data),
+      success: function (data) {
+        console.log("Succcess ==== >");
+        response = JSON.parse(data)
+        console.log(response.data);
+
+        for(let i = 0; i< response.data.length; i++){
+          document.getElementById("showItems").innerHTML += `
+          <div class="flex items-center lg:w-3/5 mx-auto border-b pb-10 mb-10 border-gray-200 sm:flex-row flex-col" id="showimgs">
+          <img class="lg:w-3/5 mx-auto mb-10 inline-flex items-center " src="../media/${response.data[i].product_image}" alt="img" >
+         <div class="flex-grow sm:text-left text-center mt-6 sm:mt-0">
+           <h2 class="text-gray-900 text-lg title-font font-medium mb-2">${response.data[i].product_name}</h2>
+           <p class="leading-relaxed text-base">Price : ${response.data[i].price}</p>
+           <p class="leading-relaxed text-base div-quantity">${response.data[i].product_desc.slice(0, 95)}..</p>
+           
+        </div>
+        </div>
+          `
+        }
+
+      },
+      dataType: "text",
+      error: function (err) {
+        console.log("---------ERROR----->")
+        console.log(err.responseText);
+      }
+    });
+  });
+
+</script>
+
 {% endblock body %}
