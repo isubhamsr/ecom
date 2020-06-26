@@ -5,19 +5,26 @@
 
 <style>
     .loader {
-  border: 16px solid #f3f3f3; /* Light grey */
-  border-top: 16px solid #3498db; /* Blue */
-  border-radius: 50%;
-  width: 50px;
-  height: 50px;
-  animation: spin 2s linear infinite;
-  margin-top: 10px;
-}
+        border: 16px solid #f3f3f3;
+        /* Light grey */
+        border-top: 16px solid #3498db;
+        /* Blue */
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        animation: spin 2s linear infinite;
+        margin-top: 10px;
+    }
 
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
 </style>
 
 <div class="container px-5 py-24 mx-auto">
@@ -108,10 +115,10 @@
         </div>
         <div id="loader" class="flex mx-auto">
             <button
-            class="flex mx-auto mt-20 text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg"
-            onclick="placeOrder()">Place Order</button>
+                class="flex mx-auto mt-20 text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg"
+                onclick="placeOrder()">Place Order</button>
         </div>
-        
+
     </div>
 </div>
 
@@ -130,9 +137,39 @@
         let ordered_item = JSON.parse(localStorage.getItem('cart'));
         let date = new Date()
         console.log(date.getFullYear());
-        console.log(date.getMonth()+1);
+        console.log(date.getMonth() + 1);
         console.log(date.getDate());
-        let finalDate = `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()}`
+        let finalDate = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`
+
+        if (first_name.length < 3) {
+            alert("Please Enter a Valid First Name")
+        }
+
+        const phoneno = /^\d{10}$/;
+        if (phone.match(phoneno))
+        {
+            return true;
+        }
+        else {
+            alert("Enter a valid 10 Digit Phone Number");
+            // return false;
+        }
+
+        if(addressLine1.length < 10){
+            alert("Provide a valid address")
+        }
+
+        if(city != "Kolkata" || city != "kolkata"){
+            alert("Now We Onli Oparate in Kolkata")
+        }
+
+        if(state != "WB" || city != "wb" || city != "West Bengal" || city != "west bengal" || city != "WEST BENGAL"){
+            alert("Now We Onli Oparate in West Bengal")
+        }
+
+        if(zip_code < 6 || zip_code > 6){
+            alert("Please Enter a Valid Zip Code")
+        }
 
         let data = {
             first_name: first_name,
@@ -143,36 +180,36 @@
             addressLine2: addressLine2,
             city: city,
             state: state,
-            zip_code : zip_code,
+            zip_code: zip_code,
             ordered_item: ordered_item,
-            date : finalDate
+            date: finalDate
         }
 
         console.log(data);
-        
 
-        document.getElementById("loader").innerHTML = `<div class="loader"></div>`
 
-        $.ajax({
-            type: "POST",
-            url: "/cheackout/",
-            data: JSON.stringify(data),
-            success: function (data) {
-                res = JSON.parse(data)
-                console.log(res.order_id);
-                console.log(res.message);
-                
-                alert(`${res.message} and your Order Id is ${res.order_id}`)
-                localStorage.clear()
-                window.location.replace("/thankyou")
-                // $.redirect('/thankyou', {'arg1': 'value1', 'arg2': 'value2'});
-            },
-            dataType: "text",
-            error: function (err) {
-                console.log("---------ERROR----->")
-                console.log(err.responseText);
-            }
-        });
+        // document.getElementById("loader").innerHTML = `<div class="loader"></div>`
+
+        // $.ajax({
+        //     type: "POST",
+        //     url: "/cheackout/",
+        //     data: JSON.stringify(data),
+        //     success: function (data) {
+        //         res = JSON.parse(data)
+        //         console.log(res.order_id);
+        //         console.log(res.message);
+
+        //         alert(`${res.message} and your Order Id is ${res.order_id}`)
+        //         localStorage.clear()
+        //         window.location.replace("/thankyou")
+        //         // $.redirect('/thankyou', {'arg1': 'value1', 'arg2': 'value2'});
+        //     },
+        //     dataType: "text",
+        //     error: function (err) {
+        //         console.log("---------ERROR----->")
+        //         console.log(err.responseText);
+        //     }
+        // });
     }
 </script>
 
