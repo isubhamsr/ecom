@@ -135,7 +135,7 @@ def tracker(request):
         print(params['email'])
         try:
             order = Order.objects.filter(order_id=params['orderId'], email=params['email'])
-            print(order)
+            # print(order)
             if len(order) > 0:
                 update = OrderUpdate.objects.filter(order_id=params['orderId'])
                 # print(update)
@@ -200,11 +200,11 @@ def cheackout(request):
             #print(another_key)
                 if(another_key=="totalPrice"):
                     totalPrice=totalPrice+dict2[key][another_key]
-        print(totalPrice)
+        # print(totalPrice)
         order = Order(first_name=params['first_name'], last_name=params['last_name'], email=params['email'], phone=params['phone'], address=address, 
                         city=params['city'], state=params['state'], zip_code=params['zip_code'],total_price=totalPrice,date=params['date'], ordered_item=params['ordered_item'])
         order.save()
-        print(order.order_id)
+        # print(order.order_id)
         order_id = order.order_id
         update = OrderUpdate(order_id=order_id, update_desc="Order Placed", status="Order Placed")
         update.save()
@@ -220,7 +220,7 @@ def sentMail(order_id, email, first_name, last_name, address, orderItem, totalPr
     #     print(val.get('quantity'))
     #     print(val.get('price'))
     #     print(val.get('totalPrice'))
-    print(orderItem)
+    # print(orderItem)
     subject = 'Order Confirmed'
     html_message = render_to_string('shop/mail_template.html', {'orderid': order_id, 'email' : email, 'first_name':first_name, 'last_name':last_name, 'address':address, 'orderItem': orderItem, 'totalPrice': totalPrice, 'date':date})
     plain_message = strip_tags(html_message)
