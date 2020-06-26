@@ -141,35 +141,35 @@
         console.log(date.getDate());
         let finalDate = `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`
 
-        if (first_name.length < 3) {
-            alert("Please Enter a Valid First Name")
-        }
+        // if (first_name.length < 3) {
+        //     alert("Please Enter a Valid First Name")
+        // }
 
-        const phoneno = /^\d{10}$/;
-        if (phone.match(phoneno))
-        {
-            return true;
-        }
-        else {
-            alert("Enter a valid 10 Digit Phone Number");
-            // return false;
-        }
+        // const phoneno = /^\d{10}$/;
+        // if (phone.match(phoneno))
+        // {
+        //     return true;
+        // }
+        // else {
+        //     alert("Enter a valid 10 Digit Phone Number");
+        //     // return false;
+        // }
 
-        if(addressLine1.length < 10){
-            alert("Provide a valid address")
-        }
+        // if(addressLine1.length < 10){
+        //     alert("Provide a valid address")
+        // }
 
-        if(city != "Kolkata" || city != "kolkata"){
-            alert("Now We Onli Oparate in Kolkata")
-        }
+        // if(city != "Kolkata" || city != "kolkata"){
+        //     alert("Now We Onli Oparate in Kolkata")
+        // }
 
-        if(state != "WB" || city != "wb" || city != "West Bengal" || city != "west bengal" || city != "WEST BENGAL"){
-            alert("Now We Onli Oparate in West Bengal")
-        }
+        // if(state != "WB" || city != "wb" || city != "West Bengal" || city != "west bengal" || city != "WEST BENGAL"){
+        //     alert("Now We Onli Oparate in West Bengal")
+        // }
 
-        if(zip_code < 6 || zip_code > 6){
-            alert("Please Enter a Valid Zip Code")
-        }
+        // if(zip_code < 6 || zip_code > 6){
+        //     alert("Please Enter a Valid Zip Code")
+        // }
 
         let data = {
             first_name: first_name,
@@ -188,28 +188,28 @@
         console.log(data);
 
 
-        // document.getElementById("loader").innerHTML = `<div class="loader"></div>`
+        document.getElementById("loader").innerHTML = `<div class="loader"></div>`
 
-        // $.ajax({
-        //     type: "POST",
-        //     url: "/cheackout/",
-        //     data: JSON.stringify(data),
-        //     success: function (data) {
-        //         res = JSON.parse(data)
-        //         console.log(res.order_id);
-        //         console.log(res.message);
+        $.ajax({
+            type: "POST",
+            url: "/cheackout/",
+            data: JSON.stringify(data),
+            success: function (data) {
+                res = JSON.parse(data)
+                console.log(res.order_id);
+                console.log(res.message);
 
-        //         alert(`${res.message} and your Order Id is ${res.order_id}`)
-        //         localStorage.clear()
-        //         window.location.replace("/thankyou")
-        //         // $.redirect('/thankyou', {'arg1': 'value1', 'arg2': 'value2'});
-        //     },
-        //     dataType: "text",
-        //     error: function (err) {
-        //         console.log("---------ERROR----->")
-        //         console.log(err.responseText);
-        //     }
-        // });
+                alert(`${res.message} and your Order Id is ${res.order_id}`)
+                localStorage.clear()
+                window.location.replace("/thankyou")
+                // $.redirect('/thankyou', {'arg1': 'value1', 'arg2': 'value2'});
+            },
+            dataType: "text",
+            error: function (err) {
+                console.log("---------ERROR----->")
+                console.log(err.responseText);
+            }
+        });
     }
 </script>
 
