@@ -1,0 +1,76 @@
+{% extends "shop/base.html" %}
+{% load static %}
+{% block title %}Woman Products{% endblock title %}
+{% block body %}
+
+<style>
+  .loader {
+    
+border: 16px solid #f3f3f3; /* Light grey */
+border-top: 16px solid #3498db; /* Blue */
+border-radius: 50%;
+width: 50px;
+height: 50px;
+animation: spin 2s linear infinite;
+margin-top: 10px;
+}
+
+@keyframes spin {
+0% { transform: rotate(0deg); }
+100% { transform: rotate(360deg); }
+}
+</style>
+
+<section class="text-gray-700 body-font">
+  <div class="container px-5 py-24 mx-auto" id="showItems">
+    <!-- <p class="leading-relaxed text-base">Price : ${response.data[i].price}</p> -->
+    <!-- <button class="flex mx-auto mt-6 text-white bg-indigo-500 border-0 py-2 px-5 focus:outline-none hover:bg-indigo-600 rounded">₹${response.data[i].price}</button> -->
+  </div>
+</section>
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+
+<script>
+  $(document).ready(function () {
+    console.log("ready!");
+    console.log("1st");
+
+    const data = { category: "woman" }
+    document.getElementById("showItems").innerHTML = `<div class="loader"></div>`
+    $.ajax({
+      type: "POST",
+      url: "/woman/",
+      data: JSON.stringify(data),
+      success: function (data) {
+        console.log("Succcess ==== >");
+        response = JSON.parse(data)
+        console.log(response.data);
+        $("#showItems").empty();
+        for(let i = 0; i< response.data.length; i++){
+          document.getElementById("showItems").innerHTML += `
+          <div class="flex items-center lg:w-3/5 mx-auto border-b pb-10 mb-10 border-gray-200 sm:flex-row flex-col" id="showimgs">
+            <a href="/productview/${response.data[i].product_id}" target="_blank" rel="noopener noreferrer" class="flex items-center mx-auto border-b border-gray-200 sm:flex-row flex-col">
+          <img class="lg:w-3/5 mx-auto mb-10 inline-flex items-center " src="../media/${response.data[i].product_image}" alt="img" >
+         <div class="flex-grow sm:text-left text-center mt-6 sm:mt-0">
+           <h2 class="text-gray-900 text-lg title-font font-medium mb-2">${response.data[i].product_name}</h2>
+           <button class="mt-6 text-white bg-indigo-500 border-0 py-2 px-5 focus:outline-none hover:bg-indigo-600 rounded">Price - ₹${response.data[i].price}</button>
+           <p class="leading-relaxed text-base div-quantity">${response.data[i].product_desc.slice(0, 95)}..</p>
+           
+        </div>
+        </a>
+        </div>
+          `
+        }
+
+      },
+      dataType: "text",
+      error: function (err) {
+        console.log("---------ERROR----->")
+        console.log(err.responseText);
+      }
+    });
+  });
+
+</script>
+
+{% endblock body %}

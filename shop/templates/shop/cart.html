@@ -1,0 +1,171 @@
+{% extends "shop/base.html" %}
+{% load static %}
+{% block title %}Your Cart{% endblock title %}
+{% block body %}
+
+<section class="text-gray-700 body-font">
+    <div class="container px-5 py-24 mx-auto" id="showItems">
+
+        <!-- <div class="flex items-center lg:w-3/5 mx-auto border-b pb-10 mb-10 border-gray-200 sm:flex-row flex-col">
+        <div class="flex-grow sm:text-left text-center mt-6 sm:mt-0">
+          <h2 class="text-gray-900 text-lg title-font font-medium mb-2">Shooting Stars</h2>
+          <p class="leading-relaxed text-base">Blue bottle crucifix vinyl post-ironic four dollar toast vegan taxidermy. Gastropub indxgo juice poutine.</p>
+          <a class="mt-3 text-indigo-500 inline-flex items-center">Learn More
+            <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4 ml-2" viewBox="0 0 24 24">
+              <path d="M5 12h14M12 5l7 7-7 7"></path>
+            </svg>
+          </a>
+        </div>
+      </div> -->
+
+
+        <!-- <button class="flex mx-auto mt-20 text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">Button</button> -->
+    </div>
+</section>
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script>
+    $(document).ready(function () {
+        console.log("ready!");
+        let cart = JSON.parse(localStorage.getItem('cart'));
+        console.log(Object.keys(cart));
+        let arr = []
+        
+        if (cart != undefined) {
+            Object.keys(cart).forEach(function eachKey(key) {
+                    // console.log(key); 
+                    // console.log(cart[key].product_name); 
+                    var totalPrice = 0
+                    totalPrice = totalPrice + cart[key].totalPrice
+                    // totalPrice = totalPrice + parseInt(cart[key].price) 
+                    // console.log(typeof(parseInt(cart[key].price)) );
+                    // console.log('totalPrice');
+                    arr.push(totalPrice)
+                    // console.log(totalPrice);
+                    // arr.push(parseInt(cart[key].price) )
+                    // console.log(arr);
+                    // arr.reduce()
+                    
+                    document.getElementById("showItems").innerHTML += `
+            <div class="flex items-center lg:w-3/5 mx-auto border-b pb-10 mb-10 border-gray-200 sm:flex-row flex-col">
+             <div class="flex-grow sm:text-left text-center mt-6 sm:mt-0">
+               <h2 class="text-gray-900 text-lg title-font font-medium mb-2">${cart[key].product_name}</h2>
+               <p class="leading-relaxed text-base">price : ${cart[key].totalPrice}</p>
+               <p class="leading-relaxed text-base div-quantity">quantity : <button onclick="minus('${cart[key].product_id}')" id="minus" class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l minus">-</button> 
+                    ${cart[key].quantity}   
+                    <button onclick="plus('${cart[key].product_id}')" id="plus" class=" bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-r">+</button>
+               </p>
+               <p class="leading-relaxed text-base">Size : ${cart[key].size}</p>
+               <button class="inline-flex mt-5 text-white bg-red-500 border-0 py-2 px-2 focus:outline-none hover:bg-red-600 rounded" onclick="deleteItem('${cart[key].product_id}')">Delete</button>
+            </div>
+           </div>
+                 `
+                       
+                });
+        
+console.log(arr);
+totalPrice = arr.reduce((a, b) => a + b, 0)
+console.log(
+  totalPrice
+)
+$("#showItems").append(`<button class="flex mx-auto mt-20 text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">Total Price: ${totalPrice}</button>
+<button class="flex mx-auto mt-5 text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg" onclick="placeOrder()">Cheackout</button>
+`);
+        // for(let i = 0; i<arr.length; i++){
+        //   console.log(arr[i]);
+        //   let total = 0
+        //   total = total + arr[i]
+        //   console.log("totalPrice " + total);
+          
+        // }
+        // for (var key in cart) {
+        //     if (cart.hasOwnProperty(key)) {
+        //         console.log(key + " -> " + cart[key]);
+        //     }
+        // }
+
+        //         for (const property in cart) {
+        //             // console.log(`${property}: ${cart[property]}`);
+        //             for (const items in cart[property]){
+
+        //                 // console.log(`${items}: ${cart[property][items]}`);
+        //                 document.getElementById("showItems").innerHTML += `
+        //                 <div class="flex items-center lg:w-3/5 mx-auto border-b pb-10 mb-10 border-gray-200 sm:flex-row flex-col">
+        //     <div class="flex-grow sm:text-left text-center mt-6 sm:mt-0">
+        //       <h2 class="text-gray-900 text-lg title-font font-medium mb-2">${cart[property]}</h2>
+        //       <p class="leading-relaxed text-base">Blue bottle crucifix vinyl post-ironic four dollar toast vegan taxidermy. Gastropub indxgo juice poutine.</p>
+        //     </div>
+        //   </div>
+
+        //                 `
+
+        //             }
+        //         }
+        //   console.log(cartSize);
+
+        //   for(let i = 0; i<cart.length; i++){
+        //       console.log(cart[i]);
+
+        //   }
+        // location.reload()
+    } else {
+        $("#cart").append(`<a href="/cart" target="_blank"
+          class="inline-flex text-white bg-gray-600 border-0 py-2 px-2 focus:outline-none hover:bg-indigo-400 rounded">Cart
+          0</a>`);
+    }
+
+
+
+
+    });
+</script>
+
+<script>
+ function minus(id) {
+  //  console.log("minus click "+id);
+
+   let cart = JSON.parse(localStorage.getItem('cart'));
+  //  console.log(cart[id].quantity);
+
+   cart[id].quantity = cart[id].quantity  - 1
+   cart[id].totalPrice = cart[id].price * cart[id].quantity
+   console.log(cart[id]);
+   cart[id] = cart[id]
+   localStorage.setItem('cart', JSON.stringify(cart));
+   location.reload()
+ }
+</script>
+
+<script>
+ function plus(id) {
+  //  console.log("plus click "+id);
+   let cart = JSON.parse(localStorage.getItem('cart'));
+  //  console.log(cart[id].quantity);
+
+   cart[id].quantity = cart[id].quantity  + 1
+   cart[id].totalPrice = cart[id].price * cart[id].quantity
+   console.log(cart[id]);
+   cart[id] = cart[id]
+   localStorage.setItem('cart', JSON.stringify(cart));
+   location.reload()
+ }
+</script>
+
+<script>
+ function deleteItem(id) {
+  //  console.log("plus click "+id);
+   let cart = JSON.parse(localStorage.getItem('cart'));
+   delete cart[id]
+   localStorage.setItem('cart', JSON.stringify(cart));
+   location.reload()
+ }
+</script>
+
+<script>
+  function placeOrder(){
+    // window.location.replace("/placeOrder")
+    window.open('/placeorder', '_blank');
+  }
+</script>
+
+{% endblock body %}

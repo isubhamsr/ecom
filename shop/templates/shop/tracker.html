@@ -1,0 +1,90 @@
+{% extends "shop/base.html" %}
+{% load static %}
+{% block title %}Tracker{% endblock title %}
+{% block body %}
+
+<section class="text-gray-700 body-font">
+  <div class="container px-5 py-24 mx-auto">
+    <div class="flex flex-col text-center w-full mb-12">
+      <h1 class="sm:text-3xl text-2xl font-medium title-font mb-4 text-gray-900">Track Your Order</h1>
+      <p class="lg:w-2/3 mx-auto leading-relaxed text-base">Enter Your Order Id and Email For Track Your Order.(Provide
+        Your Email which is Used When Your Order)</p>
+    </div>
+    <div class="flex lg:w-2/3 w-full sm:flex-row flex-col mx-auto px-8 sm:px-0">
+      <input
+        class="flex-grow w-full bg-gray-100 rounded border border-gray-400 focus:outline-none focus:border-indigo-500 text-base px-4 py-2 mr-4 mb-4 sm:mb-0"
+        placeholder="Order Id" type="text" id="orderId">
+      <input
+        class="flex-grow w-full bg-gray-100 rounded border border-gray-400 focus:outline-none focus:border-indigo-500 text-base px-4 py-2 mr-4 mb-4 sm:mb-0"
+        placeholder="Email" type="email" id="email">
+      <button class="text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg"
+        onclick="tracker()">Track</button>
+    </div>
+  </div>
+</section>
+
+<section class="text-gray-700 body-font">
+  <div class="container px-5 py-5 mx-auto" id="message">
+    <!-- <div class="lg:w-2/3 flex flex-col sm:flex-col py-4 items-start mx-auto">
+        <h1 class="sm:pr-16 text-2xl font-medium title-font py-4 text-gray-900">Thank You For Shop With Us</h1>
+        <h3 class="sm:pr-16 text-2xl font-medium title-font py-4 text-gray-900">Cheack Your Mail for Order Id and Order Confimation</h3>
+        <a href="/tracker"  target="_blank" rel="noopener noreferrer" class="flex-shrink-0 text-white bg-indigo-500 border-0 py-2 px-8 mt-4 focus:outline-none hover:bg-indigo-600 rounded text-lg mt-10 sm:mt-0">
+          Track Your Order
+        </a>
+      </div> -->
+  </div>
+</section>
+<!-- <button class="flex-shrink-0 text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg mt-10 sm:mt-0">Button</button> -->
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script>
+  function tracker() {
+    let email = document.getElementById('email').value
+    let orderId = document.getElementById('orderId').value
+
+    let data = {
+      email: email,
+      orderId: orderId
+    }
+
+    $("#message").empty();
+
+    $.ajax({
+      type: "POST",
+      url: "/tracker/",
+      data: JSON.stringify(data),
+      success: function (data) {
+        res = JSON.parse(data)
+        console.log(res.message);
+        console.log(res);
+        if (res.err === "true") {
+          document.getElementById('message').innerHTML += `
+                        <div class="lg:w-2/3 flex flex-col sm:flex-col py-4 items-start mx-auto">
+                            <h1 class="sm:pr-16 text-2xl font-medium title-font py-4 text-red-600">Message: ${res.message}</h1>
+                        </div>
+                    `
+        } else {
+          for (let i = 0; i < res.payload.length; i++) {
+            document.getElementById('message').innerHTML += `
+                        <div class="lg:w-2/3 flex flex-col sm:flex-col py-4 items-start mx-auto">
+                            <h1 class="sm:pr-16 text-2xl font-medium title-font py-4 text-gray-900">Message: ${res.message}</h1>
+                            <h3 class="sm:pr-16 text-2xl font-medium title-font py-4 text-gray-900">Status: ${res.payload[i].status}</h3>
+                            <h3 class="sm:pr-16 text-2xl font-medium title-font py-4 text-gray-900">Description: ${res.payload[i].update_desc}</h3>
+                        </div>
+                    `
+          }
+        }
+
+        // $.redirect('/thankyou', {'arg1': 'value1', 'arg2': 'value2'});
+      },
+      dataType: "text",
+      error: function (err) {
+        console.log("---------ERROR----->")
+        console.log(err.responseText);
+      }
+    });
+  }
+</script>
+
+
+{% endblock body %}
