@@ -24,6 +24,9 @@ def shopHome(request):
 def about(request):
     return render(request, 'shop/about.html')
 
+def team(request):
+    return render(request, 'shop/team.html')
+
 @csrf_exempt
 def contact(request):
     if request.method == "POST":
