@@ -16,7 +16,7 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 Please make sure to update tests as appropriate.
 
 ## Demo
-![Alt Text](https://media.giphy.com/media/vFKqnCdLPNOKc/giphy.gif)
+![Alt Text](https://www.youtube.com/watch?v=4Zmvr8B4kLk)
 
 
 [Watch On YouTube](https://www.youtube.com/watch?v=4Zmvr8B4kLk)
